@@ -1,0 +1,153 @@
+#1. Create a class that performs statistical processing of a text file - counting characters, words, sentences, etc.
+#Determine the required attributes-data and attributes-methods in class for working with the text file.
+import string
+
+import string
+
+class Read_text_file:
+    def __init__(self, text_file: str):
+        self.text_file = text_file
+
+    def counter_all_symbols(self):
+        """Підрахунок всіх символів"""
+        with open(self.text_file, 'r') as f:
+            counter = 0
+            for line in f:
+                for symbol in line:
+                    if symbol in line:
+                       counter += 1
+            return counter
+        f.flush()
+        f.close()
+
+    def counter_letters(self):
+        """Підрахунок всіх літер"""
+        with open(self.text_file, 'r') as f:
+            counter = 0
+            for line in f:
+                for letter in line:
+                    if letter.isalpha():
+                        counter += 1
+            return counter
+        f.flush()
+        f.close()
+
+    def counter_words(self):
+        """Підрахунок всіх слів"""
+        with open(self.text_file, 'r') as f:
+            counter = 0
+            for line in f:
+                for i in string.punctuation:
+                    line = line.replace(i, ' ')
+                counter += len(line.split())
+        return counter
+        f.flush()
+        f.close()
+
+    def counter_sentences(self):
+        """Підрахунок всіх речень"""
+        with open(self.text_file, 'r') as f:
+            counter = 0
+            for line in f:
+                for i in '.!?':
+                    if i in line:
+                        counter += 1
+        return counter
+        f.flush()
+        f.close()
+
+    def __str__(self):
+        return self.text_file
+
+new_text_file = Read_text_file ('abc.txt.txt')
+print('Total quantity of symbols: ', new_text_file.counter_all_symbols())
+print('Total quantity of letters: ', new_text_file.counter_letters())
+print('Total quantity of words: ', new_text_file.counter_words())
+print('Total quantity of sentences: ', new_text_file.counter_sentences())
+
+
+#2. Pizzeria offers pizza-of-the-day for business lunch. The type of pizza-of-the-day depends on the day of week.
+#Having a pizza-of-the-day simplifies ordering for customers. They don't have to be experts on specific types of pizza.
+ #Also, customers can add extra ingredients to the pizza-of-the-day. Write a program that will form orders from customers.
+
+class Pizza:
+    """Створюємо клас Піца, визначаємо назву і ціну"""
+    def __init__(self, name: str, price: int):
+        self.name = name
+        self.price = price
+
+    def __str__(self):
+        return f'{self.name} {self.price} USD'
+
+class Ingredients:
+    """Створюємо клас Інгредієнти, визначаємо назву і ціну"""
+    def __init__(self, name: str, price: int):
+        self.name = name
+        self.price = price
+
+    def __str__(self):
+        return f'{self.name} {self.price} USD'
+
+class Order:
+    """Створюємо клас Замовлення, визначаємо назву, список замовлення і кількість"""
+    def __init__ (self, order_name: str):
+        self.order_name = order_name
+        self.order_list = []
+        self.order_quantity_list = []
+
+    def add_product(self, product: str, quantity: int = 1):
+        """Функція додавання продуктів до замовлення"""
+        self.quantity = quantity
+        if product not in self.order_list:
+            self.order_list.append(product)
+            self.order_quantity_list.append(self.quantity)
+        else:
+            self.order_quantity_list[self.order_list.index(product)] += self.quantity
+
+    def total_price(self):
+        """Функція підрахунку загальної вартості замовлення"""
+        return sum(item.price * self.order_quantity_list[index] for index, item in enumerate(self.order_list))
+
+    def __str__(self):
+        Total = '\n'.join(map(lambda x: f'{x[0]} x {x[1]} = 'f'{x[0].price * x[1]} USD',
+                              zip(self.order_list, self.order_quantity_list)))
+
+        return f"{self.order_name}\n" + f"{Total}\n" f"Total: {self.total_price()} USD\n"
+
+pizza_Monday = Pizza('Pizza Margherita', 100)
+pizza_Tuesday = Pizza('Cheese Pizza', 122)
+pizza_Wednesday = Pizza('Pepperoni Pizza', 130)
+pizza_Thursday = Pizza('Veggie Pizza', 134)
+pizza_Friday = Pizza('BBQ Chicken Pizza', 128)
+pizza_Saturday = Pizza('Hawaiian Pizza', 150)
+pizza_Sunday = Pizza('Buffalo Pizza', 167)
+
+ingred_1 = Ingredients('tomato', 2)
+ingred_2 = Ingredients('cheese', 5)
+ingred_3 = Ingredients('mushrooms', 3)
+ingred_4 = Ingredients('bacon', 8)
+ingred_5 = Ingredients('corn', 7)
+ingred_6 = Ingredients('pepper', 5)
+ingred_7 = Ingredients('onion', 4)
+
+order_1 = Order('Order_1')
+order_1.add_product(pizza_Monday)
+order_1.add_product(ingred_1)
+order_1.add_product(ingred_7)
+print(order_1)
+
+order_2 = Order('Order_2')
+order_2.add_product(pizza_Sunday)
+order_2.add_product(pizza_Sunday)
+order_2.add_product(ingred_6)
+order_2.add_product(ingred_6)
+order_2.add_product(ingred_4)
+order_2.add_product(ingred_3)
+print(order_2)
+
+order_3 = Order('Order_3')
+order_3.add_product(pizza_Friday)
+order_3.add_product(ingred_7)
+order_3.add_product(ingred_6)
+order_3.add_product(pizza_Friday)
+print(order_3)
